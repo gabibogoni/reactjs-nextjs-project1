@@ -3,25 +3,29 @@ import { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    //super() para chamar o constructor da classe
-    super(props);
+  //criando um estado
+  state = {
+    name: "Gabrieli Bogoni",
+    counter: 0
+  };
 
-    //criando um estado
-    this.state = {
-      name: "Gabrieli Bogoni" 
-    };
+  handlePClick = () => {
+    //sempre quando o estado muda no React a função render vai ser chamada novamente (chamei o estado render vai ser chamado novamente com o estado novo)
+    this.setState({name: "Fellipe Carvalho"});
   }
 
-  handlePClick() {
-    console.log('<p> clicado')
+  handleAClick = (event) => {
+    /*para não precisar fazer um bind do método utilizamos um hack do JS onde é criado um método como arrow function 
+    (a arrow function não tem this dentro dela, então significa que quando eu chamar o this, ela vai buscar dentro do elemento pai, que
+    nesse caso é a própria classe)*/
+    event.preventDefault();
+    const {counter} = this.state;
+    this.setState({counter: counter + 1});
   }
-
-
 
   render() {
     /*sintaxe de destructuring*/
-    const {name} = this.state;
+    const {name, counter} = this.state;
 
     return (
       <div className="App">
@@ -29,15 +33,16 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <p onClick={this.handlePClick}>
             {/*para colocar uma var no jsx {var} */}
-            {name}
+            {name} {counter}
           </p>
           <a
+            onClick={this.handleAClick}
             className="App-link"
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Este é o link
           </a>
         </header>
       </div>
