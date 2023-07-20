@@ -35,7 +35,7 @@ class App extends Component {
   componentDidUpdate() {
     /*looping infinito (o componentDidMount() dispara 1x, o componente atualiza, como nesse caso ele atualizou, o método componentDidUpdate() vai ser
     usado e vai chamar de novo essa função e vira um looping infinito)*/
-    this.handleTimeout();
+    if(this.state.counter < 5) this.handleTimeout();
   }
 
   componentWillUnmount() {
