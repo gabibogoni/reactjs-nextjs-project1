@@ -4,67 +4,55 @@ import './App.css';
 class App extends Component {
   //criando um estado
   state = {
-    counter: 0,
-    posts: [
-      {
-        id: 1,
-        title: "O título 1",
-        body: "O body 1"
-      },
-      {
-        id: 2,
-        title: "O título 2",
-        body: "O body 2"
-      },
-      {
-        id: 3,
-        title: "O título 3",
-        body: "O body 3"
-      }
-    ]
+    posts: []
   };
 
-  timeoutUpdate = null;
-
-  /*quando o componente for montado na tela eu quero que aconteça alguma coisa, o componentDidMount() vai ser montado uma vez assim que o componente
-  for montado na tela*/
   componentDidMount() {
-    this.handleTimeout();
+    this.loadPosts();
   }
 
-  componentDidUpdate() {
-    /*looping infinito (o componentDidMount() dispara 1x, o componente atualiza, como nesse caso ele atualizou, o método componentDidUpdate() vai ser
-    usado e vai chamar de novo essa função e vira um looping infinito)*/
-    if(this.state.counter < 5) this.handleTimeout();
-  }
+  loadPosts = async () => {
+    const postsResponse = fetch('https://jsonplaceholder.typicode.com/posts', {method: 'GET'});
+    //const teste = await postsResponse.then((res) => res)
+    //const testejson = await teste.json();
+    //console.log(testejson);
 
-  componentWillUnmount() {
-    clearTimeout(this.timeoutUpdate);
-  }
+    const photosResponse = fetch('https://jsonplaceholder.typicode.com/photos', {method: 'GET'});
+    //const teste2 = await photosResponse.then((res) => res)
+    // const testejson2 = await teste2.json();
+    //console.log(testejson2);
 
-  handleTimeout = () => {
-    const {posts, counter} = this.state;
-    posts[0].title = "O título mudou";
-    
-    this.timeoutUpdate = setTimeout(() => {
-      this.setState({posts, counter: counter + 1});
-    }, 1000)
+    const [posts, photos] = await Promise.all([postsResponse, photosResponse]);
+
+    const postsJson = await posts.json();
+    const photosJson = await photos.json();
+
+    //uma foto para cada post com função de zip unindo dois arrays pelo menor array (que nesse caso é o posts)
+    const postsAndPhotos = postsJson.map((post, index) => {
+      //o spread (...) serve para pegar o conteúdo de dentro do array;
+      return {...post, imagem: photosJson[index].url}
+    })
+
+    this.setState({posts: postsAndPhotos});
   }
  
   render() {
-    /*sintaxe de destructuring*/
-    const {posts, counter} = this.state;
+    const {posts} = this.state;
 
     return (
-      <div className="App">
-        <h1>{counter}</h1>
-        {posts.map(apelido_do_item_do_array => (
-          <div key={apelido_do_item_do_array.id}>
-            <h1>{apelido_do_item_do_array.title}</h1>
-            <p>{apelido_do_item_do_array.body}</p>
-          </div>
-        ))}
-      </div>
+      <section className="container">
+        <div className="posts">
+          {posts.map(post => (
+            <div className="post">
+              <img src={post.imagem} alt={post.title} />
+              <div key={post.id} className="post-content">
+                <h1>{post.title}</h1>
+                <p>{post.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     );
   }
 }
