@@ -1,14 +1,16 @@
+import './styles.css';
+
 import { PostCard } from "../PostCard"
 
 export const PostSection = ({posts}) => (
     <div className="posts">
-        {posts.map(post => (
+        {posts.map(arrayElementPost => (
             <PostCard
-                key={post.id}  
-                title={post.title} 
-                body={post.body}
-                id={post.id}
-                imagem={post.imagem}     
+                key={arrayElementPost.id}  
+                title={arrayElementPost.title} 
+                body={arrayElementPost.body}
+                id={arrayElementPost.id}
+                imagem={arrayElementPost.imagem}     
             />
         ))}
     </div>
