@@ -6,7 +6,7 @@ import { PostSection } from '../../components/Posts';
 import { getPosts } from '../../utils/load-posts';
 import { Button } from '../../components/Button';
 import { SearchInput } from '../../components/TextInput';
-
+//teste commit
 export class Home extends Component {
   //criando um estado
   state = {
