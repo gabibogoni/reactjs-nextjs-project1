@@ -1,45 +1,40 @@
-import logo from './logo.svg';
 import { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    //super() para chamar o constructor da classe
-    super(props);
-
-    //criando um estado
-    this.state = {
-      name: "Gabrieli Bogoni" 
-    };
-  }
-
-  handlePClick() {
-    console.log('<p> clicado')
-  }
-
-
+  //criando um estado
+  state = {
+    posts: [
+      {
+        id: 1,
+        title: "O título 1",
+        body: "O body 1"
+      },
+      {
+        id: 2,
+        title: "O título 2",
+        body: "O body 2"
+      },
+      {
+        id: 3,
+        title: "O título 3",
+        body: "O body 3"
+      }
+    ]
+  };
 
   render() {
     /*sintaxe de destructuring*/
-    const {name} = this.state;
+    const {posts} = this.state;
 
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p onClick={this.handlePClick}>
-            {/*para colocar uma var no jsx {var} */}
-            {name}
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React today
-          </a>
-        </header>
+        {posts.map(apelido_do_item_do_array => (
+          <div key={apelido_do_item_do_array.id}>
+            <h1>{apelido_do_item_do_array.title}</h1>
+            <p>{apelido_do_item_do_array.body}</p>
+          </div>
+        ))}
       </div>
     );
   }
